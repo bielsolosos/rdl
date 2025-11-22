@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" data-theme="dark">
+<head th:replace="~{layout/base :: head(${appName})}"></head>
+<body class="min-h-screen bg-base-200 flex items-center justify-center p-4">
+    <div class="card w-full max-w-2xl bg-base-100 shadow-2xl animate-fade-in">
+        <div class="card-body text-center">
+            <!-- Header -->
+            <div class="flex items-center justify-center gap-3 mb-4">
+                <div class="text-5xl">🔗</div>
+                <h1 class="card-title text-4xl justify-center" th:text="${appName}">Redirect Lab</h1>
+            </div>
+            
+            <!-- Status Badge -->
+            <div class="badge badge-success badge-lg gap-2 mx-auto my-4 animate-pulse">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-4 h-4 stroke-current">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                ONLINE
+            </div>
+            
+            <!-- Message -->
+            <div class="alert alert-success shadow-lg mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span th:text="${message}">Sistema funcionando!</span>
+            </div>
+            
+            <!-- Stats -->
+            <div class="stats stats-vertical lg:stats-horizontal shadow w-full mb-6 bg-neutral">
+                <div class="stat">
+                    <div class="stat-figure text-accent">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-8 h-8 stroke-current">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="stat-title">Timestamp</div>
+                    <div class="stat-value text-sm" th:text="${timestamp}">2025-11-21</div>
+                </div>
+                
+                <div class="stat">
+                    <div class="stat-figure text-info">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-8 h-8 stroke-current">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                        </svg>
+                    </div>
+                    <div class="stat-title">Framework</div>
+                    <div class="stat-value text-sm">Spring Boot</div>
+                    <div class="stat-desc">3.5.8</div>
+                </div>
+            </div>
+            
+            <!-- Info Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div class="card bg-base-200">
+                    <div class="card-body items-center p-4">
+                        <div class="text-3xl">🗄️</div>
+                        <h3 class="card-title text-lg">Database</h3>
+                        <p class="text-base-content/70">PostgreSQL</p>
+                    </div>
+                </div>
+                
+                <div class="card bg-base-200">
+                    <div class="card-body items-center p-4">
+                        <div class="text-3xl">☕</div>
+                        <h3 class="card-title text-lg">Java</h3>
+                        <p class="text-base-content/70">Version 21</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Actions -->
+            <div class="card-actions justify-center gap-3">
+                <a href="/health" class="btn btn-primary btn-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Ver Status Detalhado
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <style>
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fade-in 0.5s ease-out;
+        }
+    </style>
+</body>
+</html>

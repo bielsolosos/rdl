@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" data-theme="dark">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">Redirect Lab</title>
+    
+    <!-- DaisyUI + Tailwind CSS via CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+</head>
+
+<body>
+    <!-- Navbar Fragment -->
+    <nav th:fragment="navbar" class="navbar bg-primary text-primary-content shadow-lg">
+        <div class="flex-1">
+            <a href="/" class="btn btn-ghost text-xl">
+                <span class="text-2xl">🔗</span>
+                Redirect Lab
+            </a>
+        </div>
+        <div class="flex-none gap-2">
+            <a href="/" class="btn btn-ghost">Home</a>
+            <a href="/health" class="btn btn-ghost">Health</a>
+        </div>
+    </nav>
+</body>
+</html>
