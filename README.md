@@ -5,7 +5,7 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue.svg)](https://www.postgresql.org/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-> **RDL (Redirect Lab)** é um encurtador de URLs moderno desenvolvido com Spring Boot 3, focado em simplicidade, performance e uma interface elegante com DaisyUI.
+> **RDL (Redirect Lab)** é um encurtador de URLs moderno desenvolvido com Spring Boot 3 e Thymeleaf, focado em simplicidade, performance e uma interface elegante com DaisyUI. Aplicação full-stack pronta para uso direto e integração com APIs externas.
 
 ---
 
@@ -27,16 +27,19 @@
 
 ## 🎯 Sobre o Projeto
 
-O **RDL** é um sistema de encurtamento de URLs que permite criar links curtos e personalizados, com interface web integrada usando Thymeleaf e DaisyUI. Ideal para portfólio e projetos que necessitam de gerenciamento de redirecionamentos.
+O **RDL** é um sistema completo de encurtamento de URLs desenvolvido com **Spring Boot 3 + Thymeleaf**, oferecendo uma aplicação web full-stack pronta para uso. Com interface moderna construída em DaisyUI e HTMX, o sistema permite gerenciar links encurtados de forma intuitiva e responsiva.
 
 ### ✨ Principais Características
 
 - 🚀 **Performance**: Spring Boot 3 com Java 21
-- 🎨 **Interface Moderna**: DaisyUI + Tailwind CSS (tema dark)
+- 🎨 **Interface Moderna**: Thymeleaf + DaisyUI + Tailwind CSS (tema dark)
+- 🔄 **Interatividade**: HTMX para atualizações dinâmicas sem reload
 - 🔒 **Seguro**: Validações robustas e tratamento de exceções global
 - 📊 **Migrations**: Flyway para controle de versão do banco
 - 🐘 **PostgreSQL**: Banco de dados relacional confiável
-- 🔄 **CRUD Completo**: Create, Read, Update, Delete e Toggle
+- 🔄 **CRUD Completo**: Interface web com Create, Read, Update, Delete e Toggle
+- 🌐 **REST API**: Endpoints prontos para integração externa
+- 📱 **Responsivo**: Layout adaptável para mobile, tablet e desktop
 
 ---
 
@@ -50,10 +53,10 @@ O **RDL** é um sistema de encurtamento de URLs que permite criar links curtos e
 - **Lombok** - Redução de boilerplate
 
 ### Frontend
-- **Thymeleaf** - Template engine
-- **DaisyUI 4.12.14** - Biblioteca de componentes
+- **Thymeleaf** - Template engine server-side
+- **DaisyUI 4.12.14** - Biblioteca de componentes UI
 - **Tailwind CSS** - Framework CSS utility-first
-- **HTMX 2.0.4** - Interatividade (preparado para uso futuro)
+- **HTMX 2.0.4** - Interatividade sem JavaScript complexo
 
 ### Banco de Dados
 - **PostgreSQL** - Banco de dados relacional
@@ -93,24 +96,63 @@ O projeto segue uma **arquitetura em camadas** (Layered Architecture) com separa
 
 ### ✅ Implementadas
 
-- [x] **Criar Redirect** - Cria um novo link encurtado
-- [x] **Listar Redirects** - Lista todos os links cadastrados
-- [x] **Buscar por Slug** - Busca redirect específico
-- [x] **Atualizar Redirect** - Atualiza dados do redirect
-- [x] **Deletar Redirect** - Remove redirect do sistema
-- [x] **Habilitar/Desabilitar** - Toggle de ativação/desativação
-- [x] **Redirecionamento** - Redireciona usuário para URL original
+#### Interface Web (Thymeleaf + HTMX)
+- [x] **Gerenciamento Completo de URLs** - Interface web full-stack para criar, listar, editar e deletar redirects
+- [x] **Atualizações Dinâmicas** - HTMX para interações sem reload de página
+- [x] **Design Responsivo** - Layout adaptável para mobile, tablet e desktop
+- [x] **Copiar para Clipboard** - Botão para copiar links encurtados
+- [x] **Toggle de Status** - Habilitar/desabilitar redirects com um clique
+- [x] **Confirmação de Exclusão** - Dialog de confirmação antes de deletar
+
+#### API REST
+- [x] **Criar Redirect** - Endpoint POST para criar novos links encurtados
+- [x] **Listar Redirects** - Endpoint GET para listar todos os redirects
+- [x] **Buscar por Slug** - Buscar redirect específico
+- [x] **Atualizar Redirect** - Endpoint PUT para atualização completa
+- [x] **Deletar Redirect** - Endpoint DELETE para remoção
+- [x] **Habilitar/Desabilitar** - Endpoint PATCH para toggle de status
+- [x] **Redirecionamento** - Sistema de redirecionamento para URL original
+
+#### Sistema
 - [x] **Página 404 Customizada** - Interface elegante para erros
 - [x] **Health Check** - Monitoramento do status da aplicação
-- [x] **Tratamento Global de Exceções** - Handler centralizado
+- [x] **Tratamento Global de Exceções** - Handler centralizado com MessageResponse
+- [x] **Validações Robustas** - Validação de dados em todas as camadas
 
-### 🔜 Futuras
+### 🔜 Roadmap
 
-- [ ] Estatísticas de cliques
-- [ ] Sistema de autenticação
-- [ ] QR Code para links
-- [ ] Expiração de links
-- [ ] Personalização de slugs
+#### 🔐 Autenticação e Autorização (Fase 1)
+- [ ] Sistema de registro de usuários
+- [ ] Login com email e senha
+- [ ] Sessões com Spring Security
+- [ ] Páginas protegidas (dashboard, gerenciamento de URLs)
+- [ ] Rotas públicas vs. rotas autenticadas
+- [ ] Gerenciamento de permissões (usuário comum vs. admin)
+
+#### 🎫 API com Autenticação JWT (Fase 2)
+- [ ] Implementação de JWT (JSON Web Token)
+- [ ] Endpoints de autenticação (`/api/auth/login`, `/api/auth/register`)
+- [ ] Refresh tokens para renovação de sessão
+- [ ] Middleware de autenticação JWT
+- [ ] Proteção de endpoints REST com tokens
+- [ ] Documentação Swagger/OpenAPI com autenticação
+
+#### 📊 Funcionalidades Avançadas (Fase 3)
+- [ ] Dashboard de usuário com estatísticas pessoais
+- [ ] Estatísticas de cliques por redirect
+- [ ] Histórico de acessos (IP, localização, navegador)
+- [ ] QR Code gerado automaticamente para cada link
+- [ ] Sistema de expiração de links (TTL configurável)
+- [ ] Personalização avançada de slugs
+- [ ] Tags e categorias para organização de links
+- [ ] Exportação de dados (CSV, JSON)
+
+#### 🎨 Melhorias de Interface (Fase 4)
+- [ ] Área de perfil do usuário
+- [ ] Temas customizáveis (light/dark/auto)
+- [ ] Gráficos interativos de estatísticas
+- [ ] Preview de URL antes de redirecionar
+- [ ] Notificações em tempo real
 
 ---
 
@@ -220,6 +262,10 @@ http://localhost:8080
 | Método | Endpoint | Descrição |
 |--------|----------|-----------|
 | `GET` | `/` | Página inicial |
+| `GET` | `/urls` | Gerenciamento de URLs (lista, criar, editar, deletar) |
+| `POST` | `/urls` | Criar novo redirect (HTMX) |
+| `POST` | `/urls/{id}/toggle` | Habilitar/desabilitar redirect (HTMX) |
+| `POST` | `/urls/{id}/delete` | Deletar redirect (HTMX) |
 | `GET` | `/health` | Status da aplicação |
 | `GET` | `/error/404` | Página de erro 404 |
 
@@ -310,9 +356,10 @@ rdl/
 │   │   │   │   │   ├── rest/                 # Controllers REST
 │   │   │   │   │   │   ├── HomeRestController.java
 │   │   │   │   │   │   └── UrlRedirectController.java
-│   │   │   │   │   └── web/                  # Controllers Web
+│   │   │   │   │   └── web/                  # Controllers Web (Thymeleaf)
 │   │   │   │   │       ├── ErrorController.java
-│   │   │   │   │       └── HomeController.java
+│   │   │   │   │       ├── HomeController.java
+│   │   │   │   │       └── UrlManagementController.java
 │   │   │   │   ├── mapper/                   # Mappers DTO <-> Entity
 │   │   │   │   │   └── UrlRedirectMapper.java
 │   │   │   │   └── model/                    # DTOs/Records
@@ -345,11 +392,13 @@ rdl/
 │   │       │   └── V1__create_url_redirect_table.sql
 │   │       ├── templates/                    # Thymeleaf templates
 │   │       │   ├── layout/
-│   │       │   │   └── base.html
+│   │       │   │   └── base.html             # Layout base com navbar
 │   │       │   ├── error/
-│   │       │   │   └── 404.html
-│   │       │   ├── index.html
-│   │       │   └── health.html
+│   │       │   │   └── 404.html              # Página 404 customizada
+│   │       │   ├── urls/
+│   │       │   │   └── list.html             # Gerenciamento de URLs (HTMX)
+│   │       │   ├── index.html                # Página inicial
+│   │       │   └── health.html               # Health check
 │   │       └── application.yml
 │   │
 │   └── test/                                 # Testes
@@ -431,7 +480,16 @@ CREATE INDEX idx_is_enabled ON urls_redirect(is_enabled);
 ### Páginas Disponíveis
 
 #### 🏠 Home (`/`)
-Página inicial com informações do sistema e status online.
+Página inicial com informações do sistema e links de navegação.
+
+#### 🔗 Gerenciamento de URLs (`/urls`)
+Interface completa para gerenciar redirects com:
+- Formulário de criação de novos links
+- Tabela com listagem de todos os redirects
+- Botões de ação (copiar, habilitar/desabilitar, deletar)
+- Atualizações dinâmicas via HTMX (sem reload)
+- Design responsivo adaptável para mobile
+- Confirmação antes de deletar
 
 #### 🏥 Health Check (`/health`)
 Dashboard com informações detalhadas:
@@ -447,13 +505,14 @@ Página customizada para URLs não encontradas, com:
 - Slug solicitado (quando disponível)
 - Botões de navegação
 
-### Tema
+### Tema e Experiência
 
 O projeto utiliza o tema **Dark** do DaisyUI, proporcionando:
 - ✅ Interface moderna e profissional
-- ✅ Melhor experiência visual
-- ✅ Componentes responsivos
-- ✅ Animações suaves
+- ✅ Melhor experiência visual em ambientes com pouca luz
+- ✅ Componentes responsivos para todos os dispositivos
+- ✅ Animações suaves e transições elegantes
+- ✅ Interatividade via HTMX sem complexidade do JavaScript moderno
 
 ---
 
@@ -484,8 +543,16 @@ O **GlobalExceptionHandler** captura e trata automaticamente:
 http://localhost:8080
 ```
 
-### 2. Criar um Redirect
-Use a API REST ou integre com um frontend:
+### 2. Interface Web - Gerenciar URLs
+Acesse `/urls` para:
+- Criar novos redirects preenchendo o formulário
+- Visualizar todos os links cadastrados
+- Copiar links encurtados para clipboard
+- Habilitar/desabilitar redirects existentes
+- Deletar redirects (com confirmação)
+
+### 3. API REST - Criar um Redirect
+Integre com sistemas externos via API:
 
 ```bash
 curl -X POST http://localhost:8080/redirect \
@@ -497,12 +564,36 @@ curl -X POST http://localhost:8080/redirect \
   }'
 ```
 
-### 3. Acessar o Link Curto
+### 4. Acessar o Link Curto
 ```
 http://localhost:8080/redirect/meu-link
 ```
 
 O usuário será automaticamente redirecionado para a URL original!
+
+### 5. Integração Externa
+A API REST está pronta para ser consumida por:
+- Aplicações frontend (React, Vue, Angular)
+- Apps mobile (Android, iOS)
+- Sistemas backend de terceiros
+- Scripts e automações
+
+**Exemplo de integração JavaScript:**
+```javascript
+// Criar redirect
+const response = await fetch('http://localhost:8080/redirect', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    slug: 'github',
+    url: 'https://github.com/usuario',
+    isEnabled: true
+  })
+});
+
+const redirect = await response.json();
+console.log(`Link criado: ${window.location.origin}/redirect/${redirect.slug}`);
+```
 
 ---
 

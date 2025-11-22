@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" data-theme="dark">
+<head th:replace="~{layout/base :: head('Gerenciar URLs - Redirect Lab')}"></head>
+<body class="min-h-screen bg-base-200">
+    <!-- Navbar -->
+    <nav th:replace="~{layout/base :: navbar}"></nav>
+    
+    <!-- Main Content -->
+    <div class="container mx-auto p-4 lg:p-8">
+        <div class="max-w-full mx-auto">
+            
+            <!-- Header -->
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h1 class="text-4xl font-bold mb-2">Gerenciar URLs</h1>
+                    <p class="text-base-content/70">Crie, edite e gerencie seus links encurtados</p>
+                </div>
+            </div>
+
+            <!-- Alert Messages -->
+            <div th:if="${success}" class="alert alert-success shadow-lg mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span th:text="${success}"></span>
+            </div>
+
+            <div th:if="${error}" class="alert alert-error shadow-lg mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span th:text="${error}"></span>
+            </div>
+            
+            <!-- Create Form with HTMX -->
+            <div class="card bg-base-100 shadow-xl mb-8">
+                <div class="card-body">
+                    <h2 class="card-title">Criar Novo Redirect</h2>
+                    
+                    <form hx-post="/urls" 
+                          hx-target="body" 
+                          hx-swap="innerHTML"
+                          class="grid grid-cols-1 gap-4">
+                        
+                        <div class="form-control w-full">
+                            <label class="label">
+                                <span class="label-text">Slug</span>
+                            </label>
+                            <input type="text" 
+                                   name="slug" 
+                                   placeholder="exemplo: github" 
+                                   class="input input-bordered w-full" 
+                                   required />
+                        </div>
+                        
+                        <div class="form-control w-full">
+                            <label class="label">
+                                <span class="label-text">URL Original</span>
+                            </label>
+                            <input type="url" 
+                                   name="url" 
+                                   placeholder="https://exemplo.com/pagina-longa" 
+                                   class="input input-bordered w-full" 
+                                   required />
+                        </div>
+                        
+                        <div>
+                            <button type="submit" class="btn btn-primary w-full sm:w-auto">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                </svg>
+                                Criar Redirect
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- URL List with HTMX -->
+            <div class="card bg-base-100 shadow-xl">
+                <div class="card-body">
+                    <h2 class="card-title mb-4">Lista de URLs</h2>
+                    
+                    <div th:if="${#lists.isEmpty(urls)}" class="text-center py-12 text-base-content/50">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto mb-4 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                        </svg>
+                        <p class="text-lg">Nenhuma URL cadastrada ainda</p>
+                        <p class="text-sm">Crie seu primeiro redirect acima</p>
+                    </div>
+                    
+                    <div th:if="${!#lists.isEmpty(urls)}" class="overflow-x-auto">
+                        <table class="table table-zebra w-full">
+                            <thead>
+                                <tr>
+                                    <th class="w-32">Slug</th>
+                                    <th class="hidden md:table-cell">URL Original</th>
+                                    <th class="w-24">Status</th>
+                                    <th class="w-48 text-center">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="url : ${urls}">
+                                    <td>
+                                        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+                                            <kbd class="kbd kbd-sm" th:text="${url.slug}">slug</kbd>
+                                            <button onclick="copyToClipboard(this)" 
+                                                    th:data-url="|http://localhost:8080/redirect/${url.slug}|"
+                                                    class="btn btn-ghost btn-xs">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td class="hidden md:table-cell">
+                                        <a th:href="${url.url}" 
+                                           target="_blank" 
+                                           class="link link-primary text-sm truncate block max-w-xs lg:max-w-md"
+                                           th:text="${url.url}">
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <span th:if="${url.isEnabled}" class="badge badge-success badge-sm">
+                                            Ativo
+                                        </span>
+                                        <span th:if="${!url.isEnabled}" class="badge badge-error badge-sm">
+                                            Inativo
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="flex flex-col sm:flex-row gap-2 justify-center">
+                                            <!-- Toggle Button with HTMX -->
+                                            <button th:attr="hx-post=@{/urls/{id}/toggle(id=${url.id})}"
+                                                    hx-target="body"
+                                                    hx-swap="innerHTML"
+                                                    type="button"
+                                                    class="btn btn-sm w-full sm:w-auto"
+                                                    th:classappend="${url.isEnabled} ? 'btn-warning' : 'btn-success'">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                                                </svg>
+                                                <span class="hidden sm:inline" th:text="${url.isEnabled} ? 'Desativar' : 'Ativar'"></span>
+                                            </button>
+                                            
+                                            <!-- Delete Button with HTMX -->
+                                            <button th:attr="hx-post=@{/urls/{id}/delete(id=${url.id})}"
+                                                    hx-target="body"
+                                                    hx-swap="innerHTML"
+                                                    hx-confirm="Tem certeza que deseja deletar este redirect?"
+                                                    type="button"
+                                                    class="btn btn-sm btn-error w-full sm:w-auto">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                                <span class="hidden sm:inline">Deletar</span>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Função para copiar URL
+        function copyToClipboard(button) {
+            const url = button.getAttribute('data-url');
+            navigator.clipboard.writeText(url).then(() => {
+                // Toast notification
+                const toast = document.createElement('div');
+                toast.className = 'toast toast-top toast-end';
+                toast.innerHTML = `
+                    <div class="alert alert-success">
+                        <span>Link copiado!</span>
+                    </div>
+                `;
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 2000);
+            });
+        }
+
+        // Scroll para o topo após atualização
+        document.body.addEventListener('htmx:afterSwap', function(event) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
