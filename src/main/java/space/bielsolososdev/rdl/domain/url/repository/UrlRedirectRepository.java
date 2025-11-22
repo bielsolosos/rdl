@@ -17,6 +17,11 @@ public interface UrlRedirectRepository extends JpaRepository<UrlRedirect, Long> 
      * Busca uma URL pelo slug (independente se está habilitada)
      */
     Optional<UrlRedirect> findBySlug(String slug);
+
+    /**
+     * Busca uma URL pelo url (independente se está habilitada)
+     */
+    Optional<UrlRedirect> findByUrl(String url);
     
     /**
      * Verifica se existe um slug
