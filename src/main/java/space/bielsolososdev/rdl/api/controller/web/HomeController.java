@@ -17,6 +17,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model) {
+        //TODO tirar essa lógica do controller. 
         var allUrls = urlRedirectService.findAll();
         long totalUrls = allUrls.size();
         long enabledUrls = allUrls.stream().filter(url -> url.getIsEnabled()).count();

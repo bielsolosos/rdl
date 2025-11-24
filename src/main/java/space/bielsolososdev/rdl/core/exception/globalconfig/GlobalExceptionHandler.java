@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import jakarta.servlet.http.HttpServletResponse;
 import space.bielsolososdev.rdl.api.model.MessageResponse;
@@ -38,6 +39,19 @@ public class GlobalExceptionHandler {
             HttpServletResponse response) throws IOException {
         
         response.sendRedirect("/error/404?slug=" + ex.getSlug());
+    }
+    
+    /**
+     * Trata rotas não encontradas - retorna 404
+     */
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ResponseEntity<MessageResponse> handleNotFound(
+            NoHandlerFoundException ex,
+            WebRequest request) {
+        
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(new MessageResponse("Rota não encontrada: " + ex.getRequestURL()));
     }
     
     /**
