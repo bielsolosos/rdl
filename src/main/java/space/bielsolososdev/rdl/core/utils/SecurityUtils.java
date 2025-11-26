@@ -75,7 +75,7 @@ public class SecurityUtils {
     /**
      * Verifica se o token expirou.
      */
-    private boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 

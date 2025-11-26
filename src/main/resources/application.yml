@@ -40,5 +40,6 @@ spring:
 
 rdl:
   jwt:
-    secret: ${JWT_SECRET:key_secreta_jwt}
-    expiration: ${JWT_EXPIRATION:3600000}   
+    secret: ${JWT_SECRET:q9xAoDjLAZsb2eM8olOfxmDYn+0f7bRUIgNEN/l+Vjp5erGN64kzEF5hXGqdxpJ9XoJCIrposVrRmBLp2+TQxQ==}
+    expiration: ${JWT_EXPIRATION:3600000}
+    refresh-expiration: ${JWT_REFRESH_EXPIRATION:86400000}   

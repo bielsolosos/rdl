@@ -20,5 +20,7 @@ public class RdlProperties {
         private String secret;
 
         private Long expiration;
+        
+        private Long refreshExpiration;
     }
 }
