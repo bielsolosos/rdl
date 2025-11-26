@@ -4,6 +4,10 @@ import java.io.IOException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -23,6 +27,71 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<MessageResponse> handleBusinessException(
             BusinessException ex, 
+            WebRequest request) {
+        
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new MessageResponse(ex.getMessage()));
+    }
+    
+    /**
+     * Trata credenciais inválidas - retorna 401
+     */
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<MessageResponse> handleBadCredentials(
+            BadCredentialsException ex,
+            WebRequest request) {
+        
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(new MessageResponse("Usuário ou senha incorretos"));
+    }
+    
+    /**
+     * Trata conta desabilitada - retorna 403
+     */
+    @ExceptionHandler(DisabledException.class)
+    public ResponseEntity<MessageResponse> handleDisabled(
+            DisabledException ex,
+            WebRequest request) {
+        
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(new MessageResponse("Conta desabilitada"));
+    }
+    
+    /**
+     * Trata conta bloqueada - retorna 403
+     */
+    @ExceptionHandler(LockedException.class)
+    public ResponseEntity<MessageResponse> handleLocked(
+            LockedException ex,
+            WebRequest request) {
+        
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(new MessageResponse("Conta bloqueada"));
+    }
+    
+    /**
+     * Trata outras exceções de autenticação - retorna 401
+     */
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<MessageResponse> handleAuthenticationException(
+            AuthenticationException ex,
+            WebRequest request) {
+        
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(new MessageResponse("Falha na autenticação"));
+    }
+    
+    /**
+     * Trata argumentos inválidos (ex: refresh token inválido) - retorna 400
+     */
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<MessageResponse> handleIllegalArgument(
+            IllegalArgumentException ex,
             WebRequest request) {
         
         return ResponseEntity
