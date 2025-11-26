@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" data-theme="winter">
   <head th:replace="~{layout/base :: head(${appName})}"></head>
-  <body class="min-h-screen bg-base-200">
+  <body class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
     <nav th:replace="~{layout/base :: navbar}"></nav>
     <div class="flex items-center justify-center p-4">
       <div class="card w-full max-w-2xl bg-base-100 shadow-2xl animate-fade-in">
@@ -16,7 +16,7 @@
 
           <!-- Status Badge -->
           <div
-            class="badge badge-success badge-lg gap-2 mx-auto my-4 animate-pulse"
+            class="badge badge-primary badge-lg gap-2 mx-auto my-4 animate-pulse"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -35,7 +35,7 @@
           </div>
 
           <!-- Message -->
-          <div class="alert alert-success shadow-lg mb-6">
+          <div class="alert alert-info shadow-lg mb-6">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -54,7 +54,7 @@
 
           <!-- Stats -->
           <div
-            class="stats stats-vertical lg:stats-horizontal shadow w-full mb-6 bg-gray-200"
+            class="stats stats-vertical lg:stats-horizontal shadow-lg w-full mb-6 border border-base-300"
           >
             <div class="stat">
               <div class="stat-figure text-primary">

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" data-theme="dark">
+<html xmlns:th="http://www.thymeleaf.org" data-theme="winter">
 <head th:fragment="head(title)">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,16 +18,16 @@
 
 <body>
     <!-- Navbar Fragment -->
-    <nav th:fragment="navbar" class="navbar bg-primary text-primary-content shadow-lg">
+    <nav th:fragment="navbar" class="navbar bg-base-100 border-b border-base-300 shadow-sm">
         <div class="flex-1">
-            <a href="/" class="btn btn-ghost text-xl">
+            <a href="/" class="btn btn-ghost text-xl font-bold text-primary">
                 <span class="text-2xl">🔗</span>
                 Redirect Lab
             </a>
         </div>
         <div class="flex-none gap-2">
-            <a href="/" class="btn btn-ghost">Home</a>
-            <a href="/urls" class="btn btn-ghost">URLs</a>
+            <a href="/" class="btn btn-ghost btn-sm">Home</a>
+            <a href="/urls" class="btn btn-primary btn-sm">URLs</a>
         </div>
     </nav>
 </body>

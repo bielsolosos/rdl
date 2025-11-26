@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" data-theme="winter">
 <head th:replace="~{layout/base :: head('Gerenciar URLs - Redirect Lab')}"></head>
-<body class="min-h-screen bg-base-200">
+<body class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
     <!-- Navbar -->
     <nav th:replace="~{layout/base :: navbar}"></nav>
     
@@ -33,9 +33,14 @@
             </div>
             
             <!-- Create Form with HTMX -->
-            <div class="card bg-base-100 shadow-xl mb-8">
+            <div class="card bg-base-100 shadow-xl mb-8 border border-base-300">
                 <div class="card-body">
-                    <h2 class="card-title">Criar Novo Redirect</h2>
+                    <h2 class="card-title text-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                        Criar Novo Redirect
+                    </h2>
                     
                     <form hx-post="/urls" 
                           hx-target="body" 
@@ -77,9 +82,14 @@
             </div>
             
             <!-- URL List with HTMX -->
-            <div class="card bg-base-100 shadow-xl">
+            <div class="card bg-base-100 shadow-xl border border-base-300">
                 <div class="card-body">
-                    <h2 class="card-title mb-4">Lista de URLs</h2>
+                    <h2 class="card-title mb-4 text-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        Lista de URLs
+                    </h2>
                     
                     <div th:if="${#lists.isEmpty(urls)}" class="text-center py-12 text-base-content/50">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto mb-4 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -135,7 +145,7 @@
                                                     hx-target="body"
                                                     hx-swap="innerHTML"
                                                     type="button"
-                                                    class="btn btn-sm w-full sm:w-auto"
+                                                    class="btn btn-sm btn-outline w-full sm:w-auto"
                                                     th:classappend="${url.isEnabled} ? 'btn-warning' : 'btn-success'">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
@@ -149,7 +159,7 @@
                                                     hx-swap="innerHTML"
                                                     hx-confirm="Tem certeza que deseja deletar este redirect?"
                                                     type="button"
-                                                    class="btn btn-sm btn-error w-full sm:w-auto">
+                                                    class="btn btn-sm btn-outline btn-error w-full sm:w-auto">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                 </svg>
