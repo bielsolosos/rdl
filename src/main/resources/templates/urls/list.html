@@ -100,13 +100,13 @@
                     </div>
                     
                     <div th:if="${!#lists.isEmpty(urls)}" class="overflow-x-auto">
-                        <table class="table table-zebra w-full">
+                        <table class="table w-full">
                             <thead>
                                 <tr>
-                                    <th class="w-32">Slug</th>
+                                    <th class="w-auto">Slug</th>
                                     <th class="hidden md:table-cell">URL Original</th>
                                     <th class="w-24">Status</th>
-                                    <th class="w-48 text-center">Ações</th>
+                                    <th class="w-auto text-center">Ações</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -126,7 +126,7 @@
                                     <td class="hidden md:table-cell">
                                         <a th:href="${url.url}" 
                                            target="_blank" 
-                                           class="link link-primary text-sm truncate block max-w-xs lg:max-w-md"
+                                           class="link link-primary text-sm break-all max-w-md"
                                            th:text="${url.url}">
                                         </a>
                                     </td>
@@ -139,18 +139,18 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <div class="flex flex-col sm:flex-row gap-2 justify-center">
+                                        <div class="flex flex-wrap gap-2 justify-center items-center min-w-max">
                                             <!-- Toggle Button with HTMX -->
                                             <button th:attr="hx-post=@{/urls/{id}/toggle(id=${url.id})}"
                                                     hx-target="body"
                                                     hx-swap="innerHTML"
                                                     type="button"
-                                                    class="btn btn-sm btn-outline w-full sm:w-auto"
+                                                    class="btn btn-sm btn-outline flex-nowrap whitespace-nowrap"
                                                     th:classappend="${url.isEnabled} ? 'btn-warning' : 'btn-success'">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
                                                 </svg>
-                                                <span class="hidden sm:inline" th:text="${url.isEnabled} ? 'Desativar' : 'Ativar'"></span>
+                                                <span th:text="${url.isEnabled} ? 'Desativar' : 'Ativar'"></span>
                                             </button>
                                             
                                             <!-- Delete Button with HTMX -->
@@ -159,11 +159,11 @@
                                                     hx-swap="innerHTML"
                                                     hx-confirm="Tem certeza que deseja deletar este redirect?"
                                                     type="button"
-                                                    class="btn btn-sm btn-outline btn-error w-full sm:w-auto">
+                                                    class="btn btn-sm btn-outline btn-error flex-nowrap whitespace-nowrap">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                 </svg>
-                                                <span class="hidden sm:inline">Deletar</span>
+                                                <span>Deletar</span>
                                             </button>
                                         </div>
                                     </td>
