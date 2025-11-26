@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" data-theme="winter">
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      data-theme="winter">
 <head th:fragment="head(title)">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,7 +29,27 @@
         </div>
         <div class="flex-none gap-2">
             <a href="/" class="btn btn-ghost btn-sm">Home</a>
-            <a href="/urls" class="btn btn-primary btn-sm">URLs</a>
+            
+            <div sec:authorize="isAuthenticated()">
+                <a href="/urls" class="btn btn-primary btn-sm">URLs</a>
+                <div class="dropdown dropdown-end">
+                    <label tabindex="0" class="btn btn-ghost btn-sm">
+                        👤 <span sec:authentication="name"></span>
+                    </label>
+                    <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 mt-4">
+                        <li>
+                            <form th:action="@{/logout}" method="post">
+                                <button type="submit" class="w-full text-left">Sair</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div sec:authorize="!isAuthenticated()">
+                <a th:href="@{/login}" class="btn btn-ghost btn-sm">Entrar</a>
+                <a th:href="@{/register}" class="btn btn-primary btn-sm">Cadastrar</a>
+            </div>
         </div>
     </nav>
 </body>

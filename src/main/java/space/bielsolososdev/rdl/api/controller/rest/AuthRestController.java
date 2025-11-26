@@ -14,6 +14,7 @@ import space.bielsolososdev.rdl.domain.users.service.RefreshTokenService;
 
 /**
  * Controller temporário com a lógica de token toda interna dentro dele. Falta colocar tudo certinho integrando a lógica da service depois.
+ * TODO: RESOLVER ISSO DAQUI.
  */
 @RestController
 @RequestMapping("/api/auth")

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+<head>
+    <title>Login - RDL</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+            <div class="card w-full max-w-md bg-base-100 shadow-xl border border-base-300">
+                <div class="card-body">
+                    <h2 class="card-title text-2xl font-bold text-center justify-center mb-4">
+                        🔗 Entrar no RDL
+                    </h2>
+                    
+                    <div th:if="${param.registered}" class="alert alert-success mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>Cadastro realizado com sucesso! Faça login para continuar.</span>
+                    </div>
+                    
+                    <div th:if="${param.error}" class="alert alert-error mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>Usuário ou senha inválidos.</span>
+                    </div>
+                    
+                    <form th:action="@{/login}" method="post">
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text">Username</span>
+                            </label>
+                            <input type="text" name="username" placeholder="Digite seu username" 
+                                   class="input input-bordered" required autofocus>
+                        </div>
+                        
+                        <div class="form-control mt-4">
+                            <label class="label">
+                                <span class="label-text">Senha</span>
+                            </label>
+                            <input type="password" name="password" placeholder="Digite sua senha" 
+                                   class="input input-bordered" required>
+                        </div>
+                        
+                        <div class="form-control mt-6">
+                            <button type="submit" class="btn btn-primary">
+                                Entrar
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <div class="divider">OU</div>
+                    
+                    <p class="text-center">
+                        Não tem uma conta?
+                        <a th:href="@{/register}" class="link link-primary">Cadastre-se</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

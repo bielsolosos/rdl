@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+<head>
+    <title>Cadastro - RDL</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+            <div class="card w-full max-w-md bg-base-100 shadow-xl border border-base-300">
+                <div class="card-body">
+                    <h2 class="card-title text-2xl font-bold text-center justify-center mb-4">
+                        🔗 Criar Conta no RDL
+                    </h2>
+                    
+                    <div th:if="${error}" class="alert alert-error mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span th:text="${error}"></span>
+                    </div>
+                    
+                    <form th:action="@{/register}" method="post" th:object="${userForm}">
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text">Username</span>
+                            </label>
+                            <input type="text" th:field="*{username}" placeholder="Escolha um username" 
+                                   class="input input-bordered" th:classappend="${#fields.hasErrors('username')} ? 'input-error' : ''" required>
+                            <label class="label" th:if="${#fields.hasErrors('username')}">
+                                <span class="label-text-alt text-error" th:errors="*{username}"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="form-control mt-4">
+                            <label class="label">
+                                <span class="label-text">Email</span>
+                            </label>
+                            <input type="email" th:field="*{email}" placeholder="seu@email.com" 
+                                   class="input input-bordered" th:classappend="${#fields.hasErrors('email')} ? 'input-error' : ''" required>
+                            <label class="label" th:if="${#fields.hasErrors('email')}">
+                                <span class="label-text-alt text-error" th:errors="*{email}"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="form-control mt-4">
+                            <label class="label">
+                                <span class="label-text">Senha</span>
+                            </label>
+                            <input type="password" th:field="*{password}" placeholder="Mínimo 6 caracteres" 
+                                   class="input input-bordered" th:classappend="${#fields.hasErrors('password')} ? 'input-error' : ''" required>
+                            <label class="label" th:if="${#fields.hasErrors('password')}">
+                                <span class="label-text-alt text-error" th:errors="*{password}"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="form-control mt-4">
+                            <label class="label">
+                                <span class="label-text">Confirmar Senha</span>
+                            </label>
+                            <input type="password" th:field="*{confirmPassword}" placeholder="Digite a senha novamente" 
+                                   class="input input-bordered" th:classappend="${#fields.hasErrors('confirmPassword')} ? 'input-error' : ''" required>
+                            <label class="label" th:if="${#fields.hasErrors('confirmPassword')}">
+                                <span class="label-text-alt text-error" th:errors="*{confirmPassword}"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="form-control mt-6">
+                            <button type="submit" class="btn btn-primary">
+                                Criar Conta
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <div class="divider">OU</div>
+                    
+                    <p class="text-center">
+                        Já tem uma conta?
+                        <a th:href="@{/login}" class="link link-primary">Faça login</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
