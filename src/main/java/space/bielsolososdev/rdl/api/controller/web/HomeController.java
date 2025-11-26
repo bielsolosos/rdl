@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import lombok.RequiredArgsConstructor;
+import space.bielsolososdev.rdl.core.config.StartupTimeListener;
 import space.bielsolososdev.rdl.domain.url.service.UrlRedirectService;
 
 @Controller
@@ -14,6 +15,7 @@ import space.bielsolososdev.rdl.domain.url.service.UrlRedirectService;
 public class HomeController {
 
     private final UrlRedirectService urlRedirectService;
+    private final StartupTimeListener timeListener;
 
     @GetMapping("/")
     public String home(Model model) {
@@ -25,7 +27,7 @@ public class HomeController {
 
         model.addAttribute("appName", "Redirect Lab");
         model.addAttribute("message", "Aplicação funcionando perfeitamente! 🚀");
-        model.addAttribute("timestamp", LocalDateTime.now());
+        model.addAttribute("timestamp", timeListener.getStartedAt());
         model.addAttribute("totalUrls", totalUrls);
         model.addAttribute("enabledUrls", enabledUrls);
         model.addAttribute("disabledUrls", disabledUrls);
