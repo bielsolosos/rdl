@@ -28,6 +28,9 @@ WORKDIR /app
 # Criar usuário não-root por segurança
 RUN groupadd -r spring && useradd -r -g spring spring
 
+# Criar diretório de logs
+RUN mkdir -p /app/logs
+
 # Copiar apenas o JAR compilado do stage anterior
 COPY --from=builder /app/target/*.jar app.jar
 

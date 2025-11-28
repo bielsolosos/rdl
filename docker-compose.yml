@@ -8,9 +8,12 @@ services:
     restart: unless-stopped
     ports:
       - "${PORT:-8080}:8080"
+    volumes:
+      - ./logs:/app/logs
     environment:
       DB_URL: ${DB_URL}
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
       SHOW_SQL: ${SHOW_SQL:-false}
       SPRING_PROFILES_ACTIVE: prod
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
