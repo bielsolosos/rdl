@@ -2,7 +2,6 @@ package space.bielsolososdev.rdl.core.interceptor;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,7 +20,6 @@ public class RedirectLoggingInterceptor implements HandlerInterceptor {
         // Verifica se é um redirect (3xx)
         if (status >= 300 && status < 400) {
             String location = response.getHeader("Location");
-            String method = request.getMethod();
             String uri = request.getRequestURI();
             String clientIp = getClientIp(request);
             
