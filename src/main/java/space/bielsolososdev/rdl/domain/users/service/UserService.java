@@ -1,5 +1,6 @@
 package space.bielsolososdev.rdl.domain.users.service;
 
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -88,5 +89,34 @@ public class UserService {
         log.info("✅ Novo usuário criado com sucesso: {} (ID: {})", username, savedUser.getId());
         
         return savedUser;
+    }
+
+    public User editUser(Long id, String username, String email) {
+        repository.findByUsername(username).orElseThrow(() -> new BusinessException("Nome de usuário já existente"));
+
+        repository.findByEmail(email).orElseThrow(() -> new BusinessException("Email do usuário já existente"));
+
+        User entity = getEntity(id);
+
+        verifyUserIntegrity(entity);
+
+        entity.setUsername(username);
+        entity.setEmail(email);
+        return repository.save(entity);
+    }
+
+
+    private User getEntity(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new BusinessException("Usuário não encontrado no sistema."));
+    }
+
+    /**
+     * Método auxiliar para verificar se o usuário está tentando editar ele mesmo ou outra pessoa.
+     * @param entity
+     */
+    private void verifyUserIntegrity(User entity) {
+        if (entity.getId() != getMe().getId())
+            throw new BadCredentialsException("Sem permissão.");
     }
 }
