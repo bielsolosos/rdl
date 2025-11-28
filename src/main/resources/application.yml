@@ -43,4 +43,17 @@ rdl:
     secret: ${JWT_SECRET:q9xAoDjLAZsb2eM8olOfxmDYn+0f7bRUIgNEN/l+Vjp5erGN64kzEF5hXGqdxpJ9XoJCIrposVrRmBLp2+TQxQ==}
     expiration: ${JWT_EXPIRATION:3600000}
     refresh-expiration: ${JWT_REFRESH_EXPIRATION:86400000}
-  registration-enabled: ${REGISTRATION_ENABLED:false}   
+  registration-enabled: ${REGISTRATION_ENABLED:false}
+
+logging:
+  level:
+    root: INFO
+    "space.bielsolososdev.rdl": ${LOG_LEVEL:DEBUG}
+    "org.springframework.web": INFO
+    "org.springframework.security": INFO
+    "org.hibernate.SQL": ${SHOW_SQL:false}
+  file:
+    name: logs/application.log
+  pattern:
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"   
