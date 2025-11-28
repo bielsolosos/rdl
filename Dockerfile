@@ -28,13 +28,13 @@ WORKDIR /app
 # Criar usuário não-root por segurança
 RUN groupadd -r spring && useradd -r -g spring spring
 
-# Criar diretório de logs
-RUN mkdir -p /app/logs
+# Criar diretório de logs com permissões adequadas
+RUN mkdir -p /app/logs && chmod 777 /app/logs
 
 # Copiar apenas o JAR compilado do stage anterior
 COPY --from=builder /app/target/*.jar app.jar
 
-# Mudar ownership para usuário não-root
+# Mudar ownership para usuário não-root (exceto logs que precisa de escrita)
 RUN chown -R spring:spring /app
 
 # Usar usuário não-root
