@@ -40,75 +40,142 @@
                         Informações da Conta
                     </h2>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Username -->
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text font-medium">Username</span>
-                            </label>
-                            <input type="text" 
-                                   th:value="${user.username}" 
-                                   class="input input-bordered bg-base-200" 
-                                   disabled />
-                        </div>
-                        
-                        <!-- Email -->
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text font-medium">E-mail</span>
-                            </label>
-                            <input type="email" 
-                                   th:value="${user.email}" 
-                                   class="input input-bordered bg-base-200" 
-                                   disabled />
-                        </div>
-                        
-                        <!-- Status -->
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text font-medium">Status</span>
-                            </label>
-                            <div class="flex items-center h-12">
-                                <span th:if="${user.isActive()}" class="badge badge-success gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    Ativo
-                                </span>
-                                <span th:unless="${user.isActive()}" class="badge badge-error gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                    Inativo
-                                </span>
+                    <form th:action="@{/profile/edit}" method="post" id="editProfileForm" class="space-y-4">
+                        <input type="hidden" name="originalUsername" th:value="${user.username()}" id="originalUsername">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Username -->
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text font-medium">Username</span>
+                                </label>
+                                <input type="text" 
+                                       name="username"
+                                       id="usernameInput"
+                                       th:value="${user.username()}" 
+                                       class="input input-bordered" 
+                                       required />
+                            </div>
+                            
+                            <!-- Email -->
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text font-medium">E-mail</span>
+                                </label>
+                                <input type="email" 
+                                       name="email"
+                                       th:value="${user.email()}" 
+                                       class="input input-bordered" 
+                                       required />
+                            </div>
+                            
+                            <!-- Status -->
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text font-medium">Status</span>
+                                </label>
+                                <div class="flex items-center h-12">
+                                    <span th:if="${user.isActive()}" class="badge badge-success gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        Ativo
+                                    </span>
+                                    <span th:unless="${user.isActive()}" class="badge badge-error gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                        Inativo
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <!-- Created At -->
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text font-medium">Membro desde</span>
+                                </label>
+                                <input type="text" 
+                                       th:value="${#temporals.format(user.createdAt(), 'dd/MM/yyyy HH:mm')}" 
+                                       class="input input-bordered bg-base-200" 
+                                       disabled />
                             </div>
                         </div>
                         
-                        <!-- Created At -->
+                        <!-- Roles -->
                         <div class="form-control">
                             <label class="label">
-                                <span class="label-text font-medium">Membro desde</span>
+                                <span class="label-text font-medium">Permissões</span>
                             </label>
-                            <input type="text" 
-                                   th:value="${#temporals.format(user.createdAt, 'dd/MM/yyyy HH:mm')}" 
-                                   class="input input-bordered bg-base-200" 
-                                   disabled />
+                            <div class="flex flex-wrap gap-2">
+                                <span th:each="role : ${user.roles()}" 
+                                      class="badge badge-primary badge-outline"
+                                      th:text="${role}">ROLE</span>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <!-- Roles -->
-                    <div class="form-control mt-4">
-                        <label class="label">
-                            <span class="label-text font-medium">Permissões</span>
-                        </label>
-                        <div class="flex flex-wrap gap-2">
-                            <span th:each="role : ${user.roles()}" 
-                                  class="badge badge-primary badge-outline"
-                                  th:text="${role}">ROLE</span>
+                        
+                        <!-- Submit Button -->
+                        <div class="form-control mt-2">
+                            <button type="button" onclick="confirmProfileUpdate()" class="btn btn-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                Salvar Alterações
+                            </button>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
+            
+            <!-- Confirmation Modal -->
+            <dialog id="confirmModal" class="modal">
+                <div class="modal-box">
+                    <h3 class="font-bold text-lg flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-warning" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                        Atenção: Username Alterado
+                    </h3>
+                    <p class="py-4">
+                        Você alterou seu <strong>username</strong>. Isso irá <strong class="text-warning">deslogar sua sessão automaticamente</strong> por questões de segurança.
+                    </p>
+                    <p class="text-sm text-base-content/70 mb-4">
+                        Você precisará fazer login novamente com o novo username.
+                    </p>
+                    <div class="modal-action">
+                        <form method="dialog">
+                            <button class="btn btn-ghost">Cancelar</button>
+                        </form>
+                        <button onclick="submitProfileForm()" class="btn btn-warning">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            </svg>
+                            Confirmar e Deslogar
+                        </button>
+                    </div>
+                </div>
+                <form method="dialog" class="modal-backdrop">
+                    <button>close</button>
+                </form>
+            </dialog>
+            
+            <script>
+                function confirmProfileUpdate() {
+                    const originalUsername = document.getElementById('originalUsername').value;
+                    const newUsername = document.getElementById('usernameInput').value;
+                    
+                    // Se o username mudou, mostra o modal de confirmação
+                    if (originalUsername !== newUsername) {
+                        document.getElementById('confirmModal').showModal();
+                    } else {
+                        // Se não mudou, submete direto
+                        submitProfileForm();
+                    }
+                }
+                
+                function submitProfileForm() {
+                    document.getElementById('editProfileForm').submit();
+                }
+            </script>
             
             <!-- Change Password Card -->
             <div class="card bg-base-100 shadow-xl border border-base-300">

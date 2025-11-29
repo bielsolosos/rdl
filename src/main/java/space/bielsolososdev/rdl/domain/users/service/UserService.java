@@ -106,17 +106,29 @@ public class UserService {
     }
 
     public User editUser(Long id, String username, String email) {
-        repository.findByUsername(username).orElseThrow(() -> new BusinessException("Nome de usuário já existente"));
-
-        repository.findByEmail(email).orElseThrow(() -> new BusinessException("Email do usuário já existente"));
-
         User entity = getEntity(id);
 
         verifyUserIntegrity(entity);
 
+        if (!isSameValue(entity.getUsername(), username)) {
+            repository.findByUsername(username).ifPresent(existingUser -> {
+                throw new BusinessException("Nome de usuário já existente");
+            });
+        }
+
+        if (!isSameValue(entity.getEmail(), email)) {
+            repository.findByEmail(email).ifPresent(existingUser -> {
+                throw new BusinessException("Email já existente");
+            });
+        }
+
         entity.setUsername(username);
         entity.setEmail(email);
-        return repository.save(entity);
+
+        User savedUser = repository.save(entity);
+        log.info("Usuário {} atualizado com sucesso: username='{}', email='{}'", id, username, email);
+
+        return savedUser;
     }
 
     private User getEntity(Long id) {
@@ -133,5 +145,11 @@ public class UserService {
     private void verifyUserIntegrity(User entity) {
         if (entity.getId() != getMe().getId())
             throw new BadCredentialsException("Sem permissão.");
+    }
+
+    private boolean isSameValue(String newValue, String currentValue) {
+        if(newValue.equals(currentValue)) return true; 
+
+        return false;
     }
 }
