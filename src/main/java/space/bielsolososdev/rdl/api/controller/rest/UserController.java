@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import space.bielsolososdev.rdl.api.mapper.UserMapper;
@@ -21,6 +22,7 @@ import space.bielsolososdev.rdl.core.exception.BusinessException;
 import space.bielsolososdev.rdl.domain.users.service.UserService;
 import space.bielsolososdev.rdl.infrastructure.RdlProperties;
 
+@Tag(name = "Users", description = "Operações Utilizadas pelo próprio usuário")
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor

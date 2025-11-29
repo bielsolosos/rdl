@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import space.bielsolososdev.rdl.api.mapper.UrlRedirectMapper;
@@ -12,7 +13,7 @@ import space.bielsolososdev.rdl.api.model.urlredirect.UrlRedirectResponse;
 import space.bielsolososdev.rdl.core.exception.BusinessException;
 import space.bielsolososdev.rdl.core.exception.RedirectException;
 import space.bielsolososdev.rdl.domain.url.service.UrlRedirectService;
-
+@Tag(name = "Url Redirect")
 @RestController
 @RequestMapping("r")
 @RequiredArgsConstructor

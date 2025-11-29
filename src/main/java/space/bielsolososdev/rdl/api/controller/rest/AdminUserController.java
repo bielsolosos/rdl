@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import space.bielsolososdev.rdl.api.annotations.IsAdmin;
@@ -26,6 +27,7 @@ import space.bielsolososdev.rdl.api.model.user.EditUserRequest;
 import space.bielsolososdev.rdl.api.model.user.UserResponse;
 import space.bielsolososdev.rdl.domain.users.service.AdminUserService;
 
+@Tag(name = "Admin Users")
 @RestController
 @RequestMapping("/api/admin/users")
 @RequiredArgsConstructor
