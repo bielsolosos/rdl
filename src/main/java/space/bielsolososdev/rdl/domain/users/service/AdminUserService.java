@@ -1,5 +1,9 @@
 package space.bielsolososdev.rdl.domain.users.service;
 
+import java.time.LocalDateTime;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -8,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import space.bielsolososdev.rdl.core.exception.BusinessException;
 import space.bielsolososdev.rdl.domain.users.model.User;
 import space.bielsolososdev.rdl.domain.users.repository.UserRepository;
+import space.bielsolososdev.rdl.domain.users.repository.specification.UserSpecification;
 
 /**
  * Altera informações de qualquer usuário sem validar senha antiga (Admin only)
@@ -21,12 +26,13 @@ public class AdminUserService {
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
 
-    /**
-     * Alterna o status ativo/inativo de um usuário (Admin only)
-     * 
-     * @param id ID do usuário
-     * @return Usuário atualizado
-     */
+    public Page<User> listUsers(Pageable pageable, String filter, Boolean isActive, LocalDateTime createdAfter,
+            LocalDateTime createdBefore) {
+        UserSpecification spec = new UserSpecification(filter, isActive, createdAfter, createdBefore);
+
+        return repository.findAll(spec, pageable);
+    }
+
     public User toggleUserActive(Long id) {
         log.debug("Alternando status ativo do usuário com ID: {}", id);
 
@@ -40,11 +46,6 @@ public class AdminUserService {
         return savedUser;
     }
 
-    /**
-     * Deleta um usuário do sistema (Admin only)
-     * 
-     * @param id ID do usuário
-     */
     public void deleteUser(Long id) {
         log.debug("Tentativa de deletar usuário com ID: {}", id);
 
@@ -53,13 +54,6 @@ public class AdminUserService {
 
         log.warn("Usuário {} (ID: {}) foi DELETADO do sistema", user.getUsername(), id);
     }
-
-    /**
-     * 
-     * @param id          ID do usuário
-     * @param newPassword Nova senha
-     * @return Usuário atualizado
-     */
     public User adminChangePassword(Long id, String newPassword) {
         log.debug("Admin alterando senha do usuário com ID: {}", id);
 
@@ -72,14 +66,6 @@ public class AdminUserService {
         return savedUser;
     }
 
-    /**
-     * Edita usuário como admin (sem verificação de integridade)
-     * 
-     * @param id       ID do usuário
-     * @param username Novo username
-     * @param email    Novo email
-     * @return Usuário atualizado
-     */
     public User adminEditUser(Long id, String username, String email) {
         User entity = userService.getEntity(id);
 
@@ -104,8 +90,9 @@ public class AdminUserService {
         return savedUser;
     }
 
-        private boolean isSameValue(String newValue, String currentValue) {
-        if(newValue.equals(currentValue)) return true; 
+    private boolean isSameValue(String newValue, String currentValue) {
+        if (newValue.equals(currentValue))
+            return true;
 
         return false;
     }

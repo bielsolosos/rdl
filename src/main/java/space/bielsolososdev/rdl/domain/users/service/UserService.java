@@ -1,9 +1,5 @@
 package space.bielsolososdev.rdl.domain.users.service;
 
-import java.time.LocalDateTime;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,8 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 import space.bielsolososdev.rdl.core.exception.BusinessException;
 import space.bielsolososdev.rdl.domain.users.model.User;
 import space.bielsolososdev.rdl.domain.users.repository.UserRepository;
-import space.bielsolososdev.rdl.domain.users.repository.specification.UserSpecification;
 
+/**
+ * Altera informações do seu próprio usuário
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -24,13 +22,6 @@ public class UserService {
 
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
-
-    public Page<User> listUsers(Pageable pageable, String filter, Boolean isActive, LocalDateTime createdAfter,
-            LocalDateTime createdBefore) {
-        UserSpecification spec = new UserSpecification(filter, isActive, createdAfter, createdBefore);
-
-        return repository.findAll(spec, pageable);
-    }
 
     public User getMe() {
         log.debug("Buscando informações do usuário autenticado");

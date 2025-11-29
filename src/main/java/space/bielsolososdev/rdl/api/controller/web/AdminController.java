@@ -21,15 +21,13 @@ import space.bielsolososdev.rdl.api.mapper.UserMapper;
 import space.bielsolososdev.rdl.api.model.user.UserResponse;
 import space.bielsolososdev.rdl.core.exception.BusinessException;
 import space.bielsolososdev.rdl.domain.users.service.AdminUserService;
-import space.bielsolososdev.rdl.domain.users.service.UserService;
 
 @Controller
 @RequestMapping("/admin")
 @RequiredArgsConstructor
 @IsAdmin
 public class AdminController {
-
-    private final UserService userService;
+    
     private final AdminUserService adminUserService;
 
     @GetMapping
@@ -42,7 +40,7 @@ public class AdminController {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdBefore) {
 
         // Busca usuários aplicando filtros e paginação
-        Page<UserResponse> users = userService
+        Page<UserResponse> users = adminUserService
                 .listUsers(pageable, filter, isActive, createdAfter, createdBefore)
                 .map(UserMapper::toUserResponse);
 

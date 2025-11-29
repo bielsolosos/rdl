@@ -16,14 +16,14 @@ import lombok.RequiredArgsConstructor;
 import space.bielsolososdev.rdl.api.annotations.IsAdmin;
 import space.bielsolososdev.rdl.api.mapper.UserMapper;
 import space.bielsolososdev.rdl.api.model.user.UserResponse;
-import space.bielsolososdev.rdl.domain.users.service.UserService;
+import space.bielsolososdev.rdl.domain.users.service.AdminUserService;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/admin/users")
 @RequiredArgsConstructor
-public class UserController {
+public class AdminUserController {
 
-    private final UserService userService;
+    private final AdminUserService userService;
 
     @GetMapping
     @IsAdmin
