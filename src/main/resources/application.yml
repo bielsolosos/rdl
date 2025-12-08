@@ -1,13 +1,11 @@
-server:
-  port: ${PORT:8080}
-
 spring:
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
   application:
     name: rdl
-
   output:
     ansi:
-      enabled: always   
+      enabled: always
 
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/rdl-db}
@@ -30,7 +28,6 @@ spring:
     baseline-on-migrate: true
 
   thymeleaf:
-    cache: false
     prefix: classpath:/templates/
     suffix: .html
 
@@ -38,13 +35,15 @@ spring:
     resources:
       add-mappings: false
 
+server:
+  port: ${PORT:8080}
+
 rdl:
   jwt:
     secret: ${JWT_SECRET:q9xAoDjLAZsb2eM8olOfxmDYn+0f7bRUIgNEN/l+Vjp5erGN64kzEF5hXGqdxpJ9XoJCIrposVrRmBLp2+TQxQ==}
     expiration: ${JWT_EXPIRATION:3600000}
     refresh-expiration: ${JWT_REFRESH_EXPIRATION:86400000}
   registration-enabled: ${REGISTRATION_ENABLED:false}
-  swagger-enabled: ${SWAGGER_ENABLED:true}
 
 logging:
   level:
@@ -53,17 +52,13 @@ logging:
     "org.springframework.web": INFO
     "org.springframework.security": INFO
     "org.hibernate.SQL": ${SHOW_SQL:false}
-  file:
-    name: logs/application.log
   pattern:
     console: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"
-    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
 
 springdoc:
   api-docs:
     path: /v3/api-docs
   swagger-ui:
     path: /swagger-ui.html
-    enabled: ${SWAGGER_ENABLED:true}
     operations-sorter: method
-    tags-sorter: alpha   
+    tags-sorter: alpha

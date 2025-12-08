@@ -1,0 +1,12 @@
+spring:
+  thymeleaf:
+    cache: false
+
+rdl:
+  swagger-enabled: true
+
+springdoc:
+  swagger-ui:
+    enabled: true
+
+

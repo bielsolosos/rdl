@@ -1,0 +1,22 @@
+spring:
+  thymeleaf:
+    cache: true
+
+rdl:
+  swagger-enabled: false
+
+springdoc:
+  swagger-ui:
+    enabled: false
+
+logging:
+  file:
+    name: logs/application.log
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 30
+      total-size-cap: 1GB
+
