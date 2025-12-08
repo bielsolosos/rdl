@@ -5,35 +5,7 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Thymeleaf](https://img.shields.io/badge/Thymeleaf-3-005F0F?style=for-the-badge&logo=thymeleaf&logoColor=white)](https://www.thymeleaf.org/)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
-[![Deploy](https://img.shields.io/badge/Deploy-Automated-brightgreen?style=for-the-badge&logo=github-actions)](https://github.com/bielsolosos/Redirect-Lab/actions)
 
-> **RDL (Redirect Lab)** é um encurtador de URLs moderno construído como um **monolito modular**, projetado para funcionar de forma standalone e também ser facilmente integrado com outras APIs. A aplicação está em construção ativa, porém já se encontra em uma **v1 praticamente estável**.
-
-## 🚀 Deploy Automático
-
-Este projeto possui **GitHub Actions** configurado para deploy automático em VPS usando **Podman Compose** e autenticação por senha SSH.
-
-**📖 [Guia Rápido](.github/QUICK_START.md)** | **📚 [Guia Completo](.github/DEPLOY_SETUP.md)**
-
-### Quick Start - Deploy
-
-```bash
-# 1. Configure as secrets no GitHub (Settings → Secrets):
-#    VPS_HOST, VPS_USER, VPS_PASSWORD, VPS_PROJECT_PATH
-
-# 2. Prepare a VPS:
-ssh root@SEU-IP
-apt install -y git podman python3-pip
-pip3 install podman-compose
-git clone https://github.com/bielsolosos/Redirect-Lab.git
-
-# 3. Faça push para a branch main
-git push origin main
-
-# 4. Deploy automático será iniciado! 🚀
-```
-
----
 
 ## Visão Geral
 
@@ -266,40 +238,24 @@ POST /api/auth/refresh
 
 ## Roadmap
 
-### Fase 1: Auditoria e Logging (Próximo)
+### O que realmente falta fazer
 
-- [ ] **LogBack estruturado** com rastreamento completo
-- [ ] **Auditoria de acessos**: IP, User-Agent, timestamps
 - [ ] **Detecção de bots** com logging específico
 - [ ] **Honey pots** para identificar tentativas maliciosas
-- [ ] **Auditoria de usuários**: login, logout, alterações
-
-### Fase 2: Módulo de Usuários Completo
-
-- [ ] **CRUD Web completo**: criar, listar, editar usuários
-- [ ] **Troca de senha** (já implementado parcialmente)
 - [ ] **Gerenciamento de roles** (ADMIN, USER)
-- [ ] **API REST completa** para usuários
-- [ ] **Ativação/desativação** de contas
 - [ ] **Recuperação de senha** por email
+- [ ] **Cache via memória RAM** Redis/Caffeine
+- [ ] **Docker-Compose criando NetWork**
 
-### Fase 3: Redirects por Usuário
+### Redirects por Usuário
 
 - [ ] **Ownership de URLs**: cada usuário gerencia seus próprios redirects
 - [ ] **URLs públicas vs privadas**
 - [ ] **Limite de URLs** por plano/role
 - [ ] **Slugs personalizados** por usuário
 
-### Fase 4: Métricas e Analytics
 
-- [ ] **Contagem de cliques** por redirect
-- [ ] **Histórico de acessos**: timestamp, IP, referrer
-- [ ] **Geolocalização** aproximada (país, região)
-- [ ] **User-Agent parsing**: browser, OS, device
-- [ ] **Dashboard de métricas** com gráficos
-- [ ] **Exportação de dados** (CSV, JSON)
-
-### Fase 5: Features Avançadas
+### Features Avançadas
 
 - [ ] **QR Code** gerado automaticamente
 - [ ] **Links com expiração** (TTL configurável)
@@ -401,19 +357,6 @@ DELETE /api/redirect/{id}
 Authorization: Bearer {accessToken}
 ```
 
----
-
-## Contribuindo
-
-Contribuições são bem-vindas! Por favor:
-
-1. Fork o projeto
-2. Crie uma branch (`git checkout -b feature/nova-feature`)
-3. Commit suas mudanças (`git commit -m 'Add nova feature'`)
-4. Push para a branch (`git push origin feature/nova-feature`)
-5. Abra um Pull Request
-
----
 
 ## Licença
 
