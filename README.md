@@ -244,7 +244,7 @@ POST /api/auth/refresh
 - [ ] **Honey pots** para identificar tentativas maliciosas
 - [ ] **Gerenciamento de roles** (ADMIN, USER)
 - [ ] **Recuperação de senha** por email
-- [ ] **Cache via memória RAM** Redis/Caffeine
+- [ X ] **Cache via memória RAM** Redis/Caffeine
 - [ ] **Docker-Compose criando NetWork**
 
 ### Redirects por Usuário

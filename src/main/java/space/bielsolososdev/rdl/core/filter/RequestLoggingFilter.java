@@ -34,7 +34,7 @@ public class RequestLoggingFilter extends OncePerRequestFilter {
         String queryString = request.getQueryString();
         String userAgent = request.getHeader("User-Agent");
         
-        log.info("📥 REQUISIÇÃO: {} {} | IP: {} | UserAgent: {}", 
+        log.info("REQUISIÇÃO: {} {} | IP: {} | UserAgent: {}", 
                 method, 
                 queryString != null ? uri + "?" + queryString : uri,
                 clientIp,
@@ -48,10 +48,8 @@ public class RequestLoggingFilter extends OncePerRequestFilter {
             long duration = System.currentTimeMillis() - startTime;
             int status = responseWrapper.getStatus();
             
-            String statusEmoji = getStatusEmoji(status);
             
-            log.info("📤 RESPOSTA: {} | Status: {} {} | Duração: {}ms | URI: {}", 
-                    statusEmoji,
+            log.info("Status: {} {} | Duração: {}ms | URI: {}", 
                     status,
                     getStatusDescription(status),
                     duration,
@@ -71,14 +69,6 @@ public class RequestLoggingFilter extends OncePerRequestFilter {
             ip = request.getRemoteAddr();
         }
         return ip;
-    }
-    
-    private String getStatusEmoji(int status) {
-        if (status >= 200 && status < 300) return "✅";
-        if (status >= 300 && status < 400) return "🔀";
-        if (status >= 400 && status < 500) return "⚠️";
-        if (status >= 500) return "❌";
-        return "ℹ️";
     }
     
     private String getStatusDescription(int status) {

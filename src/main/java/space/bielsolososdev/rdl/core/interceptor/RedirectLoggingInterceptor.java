@@ -34,7 +34,7 @@ public class RedirectLoggingInterceptor implements HandlerInterceptor {
             
             // Log adicional para redirects permanentes (importantes para SEO)
             if (status == 301 || status == 308) {
-                log.warn("⚠️ REDIRECT PERMANENTE detectado: {} -> {}", uri, location);
+                log.warn("REDIRECT PERMANENTE detectado: {} -> {}", uri, location);
             }
         }
     }
