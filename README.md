@@ -13,14 +13,20 @@ O RDL foi desenvolvido com foco em **modularidade** e **baixo acoplamento**, per
 
 ### Status do Projeto
 
+**Versão Atual: v1.0 (Stable)** ✅
+
+A **V1 do projeto está completa e funcional**, incluindo sistema completo de autenticação, gerenciamento de URLs por usuário, painel administrativo e interface web responsiva. O projeto está pronto para uso em produção.
+
 | Componente | Status |
 |------------|--------|
-| Core Infrastructure | ✅ Estável |
-| Autenticação Web (Session + CSRF) | ✅ Estável |
-| Autenticação API (JWT + Refresh Token) | ✅ Estável |
-| Módulo de URLs | ✅ Estável |
-| Módulo de Usuários | 🔄 Em desenvolvimento |
-| Dashboard & Métricas | 📋 Planejado |
+| Core Infrastructure | ✅ V1 Completa |
+| Autenticação Web (Session + CSRF) | ✅ V1 Completa |
+| Autenticação API (JWT + Refresh Token) | ✅ V1 Completa |
+| Módulo de URLs (CRUD + Ownership) | ✅ V1 Completa |
+| Módulo de Usuários (CRUD + Admin) | ✅ V1 Completa |
+| Dashboard & Estatísticas | ✅ V1 Completa |
+| Sistema de Cache (Redis) | ✅ V1 Completa |
+| Métricas & Analytics | 📋 Próxima versão |
 
 ---
 
@@ -37,6 +43,7 @@ O RDL foi desenvolvido com foco em **modularidade** e **baixo acoplamento**, per
 | **Flyway** | - | Migrations e versionamento de banco |
 | **Lombok** | - | Redução de boilerplate |
 | **JJWT** | 0.12.5 | Geração e validação de JWT |
+| **Redis** | - | Cache em produção |
 
 ### Frontend (Server-Side Rendering)
 
@@ -46,7 +53,6 @@ O RDL foi desenvolvido com foco em **modularidade** e **baixo acoplamento**, per
 | **Thymeleaf Extras Spring Security 6** | - | Integração sec:authorize |
 | **DaisyUI** | 4.12.14 | Componentes UI (tema Winter) |
 | **Tailwind CSS** | CDN | Utility-first CSS |
-| **HTMX** | 2.0.4 | Interatividade sem JavaScript complexo |
 | **Lucide Icons** | latest | Ícones SVG |
 
 ### Banco de Dados & Infraestrutura
@@ -152,16 +158,9 @@ O RDL implementa **dois sistemas de autenticação** para diferentes casos de us
 Para as páginas renderizadas com Thymeleaf:
 
 - **Spring Security Form Login** com sessões HTTP
-- **CSRF Protection** integrado com HTMX
+- **CSRF Protection** integrado
 - **Remember-me** com cookie persistente
 - **Thymeleaf Security Dialect** (`sec:authorize`, `sec:authentication`)
-
-```html
-<!-- Exemplo de uso no Thymeleaf -->
-<div sec:authorize="isAuthenticated()">
-    <span sec:authentication="name">Usuário</span>
-</div>
-```
 
 ### 2. Autenticação API (JWT + Refresh Token)
 
@@ -202,66 +201,80 @@ POST /api/auth/refresh
 | `/login` | GET/POST | Pública | Login web |
 | `/urls/**` | * | Session | Gerenciamento URLs (web) |
 | `/profile/**` | * | Session | Perfil do usuário |
+| `/admin/**` | * | Session (ADMIN) | Painel administrativo |
 | `/api/auth/**` | POST | Pública | Endpoints de autenticação |
 | `/api/**` | * | JWT | API REST protegida |
-| `/redirect/{slug}` | GET | Pública | Redirecionamento |
+| `/r/{slug}` | GET | Pública | Redirecionamento |
 
 ---
 
-## Funcionalidades Atuais
+## Funcionalidades da V1
 
-### Interface Web (Thymeleaf + HTMX)
+### Interface Web (Thymeleaf)
 
-- ✅ Login/Logout com sessão
-- ✅ Gerenciamento completo de URLs (CRUD)
-- ✅ Toggle de status com HTMX (sem reload)
+- ✅ Login/Logout com sessão e CSRF protection
+- ✅ Gerenciamento completo de URLs (CRUD) por usuário
+- ✅ Paginação e filtros avançados (texto, status, data)
+- ✅ Toggle de status com modais de confirmação
 - ✅ Copiar link para clipboard
-- ✅ Página de perfil com troca de senha
+- ✅ Página de perfil com edição de dados e troca de senha
+- ✅ Painel administrativo completo (gestão de usuários)
+- ✅ Dashboard com estatísticas (público e autenticado)
 - ✅ Design responsivo (DaisyUI Winter theme)
 - ✅ Ícones SVG (Lucide Icons)
 
 ### API REST
 
 - ✅ Autenticação JWT com refresh token
-- ✅ CRUD de redirects protegido
+- ✅ CRUD de redirects protegido por usuário
 - ✅ Tratamento global de exceções
 - ✅ Respostas padronizadas (MessageResponse)
+- ✅ Documentação Swagger/OpenAPI
 
 ### Sistema
 
 - ✅ Migrations automáticas (Flyway)
 - ✅ Cleanup automático de refresh tokens expirados
+- ✅ Cache com Redis (opcional em dev)
+- ✅ Sistema de permissões (ADMIN, USER)
+- ✅ Ownership de URLs por usuário
 - ✅ Health check endpoint
 - ✅ Página 404 customizada
 
 ---
 
-## Roadmap
+## Roadmap - Próximas Versões
 
-### O que realmente falta fazer
+A **V1 está completa e estável**. As próximas features planejadas incluem:
 
+### Métricas & Analytics (V2)
+
+- [ ] **Dashboard de métricas** de cliques por URL
+- [ ] **Gráficos de uso** (clicks over time, dispositivos, browsers)
+- [ ] **Geolocalização** de acessos (país, cidade)
 - [ ] **Detecção de bots** com logging específico
 - [ ] **Honey pots** para identificar tentativas maliciosas
-- [ ] **Gerenciamento de roles** (ADMIN, USER)
-- [ ] **Recuperação de senha** por email
-- [ X ] **Cache via memória RAM** Redis/Caffeine
-- [ ] **Docker-Compose criando NetWork**
+- [ ] **Exportação de relatórios** (CSV, PDF)
 
-### Redirects por Usuário
+### Features Avançadas (V3)
 
-- [ ] **Ownership de URLs**: cada usuário gerencia seus próprios redirects
-- [ ] **URLs públicas vs privadas**
-- [ ] **Limite de URLs** por plano/role
-- [ ] **Slugs personalizados** por usuário
-
-
-### Features Avançadas
-
-- [ ] **QR Code** gerado automaticamente
+- [ ] **QR Code** gerado automaticamente para cada URL
 - [ ] **Links com expiração** (TTL configurável)
 - [ ] **Preview de destino** antes de redirecionar
 - [ ] **Tags e categorias** para organização
+- [ ] **Slugs personalizados** com validação
+- [ ] **URLs públicas vs privadas**
+- [ ] **Limite de URLs** por plano/role
 - [ ] **API pública** com rate limiting
+- [ ] **Webhooks** para eventos (novo redirect, clique, etc.)
+
+### Infraestrutura (Futuro)
+
+- [ ] **Docker Compose** com network configurada
+- [ ] **CI/CD** com GitHub Actions
+- [ ] **Testes automatizados** (Unit + Integration)
+- [ ] **Recuperação de senha** por email
+- [ ] **Notificações** (Email, Push)
 
 ---
 
@@ -272,6 +285,7 @@ POST /api/auth/refresh
 - Java 21+
 - PostgreSQL 16+
 - Maven 3.8+
+- Redis (opcional em dev)
 
 ### Setup
 
@@ -304,9 +318,15 @@ JWT_SECRET=sua-chave-secreta-256-bits-minimo
 JWT_EXPIRATION=900000
 JWT_REFRESH_EXPIRATION=604800000
 
+# Redis (opcional em dev)
+REDIS_HOST=localhost
+REDIS_PORT=6379
+REDIS_PASSWORD=
+
 # App
 APP_NAME=Redirect Lab
 SHOW_SQL=false
+REGISTRATION_ENABLED=false
 ```
 
 ---
@@ -335,7 +355,7 @@ Content-Type: application/json
 ### Redirects (Requer JWT)
 
 ```bash
-# Listar
+# Listar (apenas do usuário autenticado)
 GET /api/redirect
 Authorization: Bearer {accessToken}
 

@@ -113,7 +113,7 @@
               </div>
               <div class="stat-title">URLs Ativas</div>
               <div class="stat-value text-success" th:text="${enabledUrls}">0</div>
-              <div class="stat-desc">Funcionando</div>
+              <div class="stat-desc" th:text="${enabledPercentage} + ' do total'">0% do total</div>
             </div>
 
             <div class="stat">
@@ -140,28 +140,37 @@
 
           <!-- Info Cards -->
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            <div class="card bg-base-200">
+            <div class="card bg-base-200 hover:bg-base-300 transition-colors">
               <div class="card-body items-center p-4">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
                 <h3 class="card-title text-lg">Database</h3>
-                <p class="text-base-content/70">PostgreSQL 16</p>
+                <p class="text-base-content/70" th:text="${database}">PostgreSQL 16</p>
               </div>
             </div>
 
-            <div class="card bg-base-200">
+            <div class="card bg-base-200 hover:bg-base-300 transition-colors">
               <div class="card-body items-center p-4">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" x2="6" y1="2" y2="4"/><line x1="10" x2="10" y1="2" y2="4"/><line x1="14" x2="14" y1="2" y2="4"/></svg>
                 <h3 class="card-title text-lg">Java</h3>
-                <p class="text-base-content/70">Version 21</p>
+                <p class="text-base-content/70" th:text="${javaVersion}">Version 21</p>
               </div>
             </div>
 
-            <div class="card bg-base-200">
+            <div class="card bg-base-200 hover:bg-base-300 transition-colors">
               <div class="card-body items-center p-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                <h3 class="card-title text-lg">Uptime</h3>
-                <p class="text-base-content/70 text-sm" th:text="${#temporals.format(timestamp, 'dd/MM/yyyy HH:mm:ss')}">22/11/2025 14:30</p>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-success" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="m10 13-2 2 2 2"/><path d="m14 17 2-2-2-2"/></svg>
+                <h3 class="card-title text-lg">Framework</h3>
+                <p class="text-base-content/70" th:text="${framework}">Spring Boot 3.5.8</p>
               </div>
+            </div>
+          </div>
+
+          <!-- Uptime Section -->
+          <div class="alert shadow-lg mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-success" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <div>
+              <h3 class="font-bold">Sistema Online desde</h3>
+              <div class="text-sm" th:text="${#temporals.format(timestamp, 'dd/MM/yyyy HH:mm:ss')}">22/11/2025 14:30:00</div>
             </div>
           </div>
 

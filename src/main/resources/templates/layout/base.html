@@ -26,23 +26,6 @@
     />
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- HTMX -->
-    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
-    
-    <!-- CSRF Token for HTMX -->
-    <meta name="_csrf" th:content="${_csrf.token}" />
-    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        document.body.addEventListener('htmx:configRequest', function(evt) {
-          var csrf = document.querySelector('meta[name="_csrf"]');
-          var header = document.querySelector('meta[name="_csrf_header"]');
-          if (csrf && header) {
-            evt.detail.headers[header.content] = csrf.content;
-          }
-        });
-      });
-    </script>
   </head>
 
   <body>

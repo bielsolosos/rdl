@@ -6,250 +6,466 @@
     <nav th:replace="~{layout/base :: navbar}"></nav>
     
     <!-- Main Content -->
-    <div class="container mx-auto p-3 sm:p-4 lg:p-8">
-        <div class="max-w-full mx-auto">
-            
-            <!-- Header -->
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 sm:mb-8">
-                <div>
-                    <h1 class="text-2xl sm:text-4xl font-bold mb-1 sm:mb-2">Gerenciar URLs</h1>
-                    <p class="text-sm sm:text-base text-base-content/70">Crie, edite e gerencie seus links encurtados</p>
-                </div>
-            </div>
-
-            <!-- Alert Messages -->
-            <div th:if="${success}" class="alert alert-success shadow-lg mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+    <div class="container mx-auto p-4 lg:p-8">
+        
+        <!-- Alertas de Feedback -->
+        <div th:if="${success}" class="alert alert-success shadow-lg mb-6">
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <span th:text="${success}"></span>
+                <span th:text="${success}">Operação realizada com sucesso!</span>
             </div>
-
-            <div th:if="${error}" class="alert alert-error shadow-lg mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+        </div>
+        
+        <div th:if="${error}" class="alert alert-error shadow-lg mb-6">
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <span th:text="${error}"></span>
+                <span th:text="${error}">Erro ao realizar operação.</span>
             </div>
-            
-            <!-- Create Form with HTMX -->
-            <div class="card bg-base-100 shadow-xl mb-6 sm:mb-8 border border-base-300">
-                <div class="card-body p-4 sm:p-6">
-                    <h2 class="card-title text-primary text-base sm:text-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                        </svg>
-                        Criar Novo Redirect
-                    </h2>
+        </div>
+        
+        <!-- Header -->
+        <div class="mb-6">
+            <h1 class="text-4xl font-bold mb-2 flex items-center gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                </svg>
+                Gerenciar URLs
+            </h1>
+            <p class="text-base-content/70">Crie, edite e gerencie seus links encurtados</p>
+        </div>
+
+        <!-- Create Form Card -->
+        <div class="card bg-base-100 shadow-xl mb-6 border border-base-300">
+            <div class="card-body">
+                <h2 class="card-title text-primary mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Criar Novo Redirect
+                </h2>
+                
+                <form method="post" action="/urls" class="space-y-4">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                     
-                    <form hx-post="/urls" 
-                          hx-target="body" 
-                          hx-swap="innerHTML"
-                          class="grid grid-cols-1 gap-3 sm:gap-4">
-                        
-                        <div class="form-control w-full">
-                            <label class="label py-1">
-                                <span class="label-text text-sm">Slug</span>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-medium">Slug</span>
                             </label>
                             <input type="text" 
                                    name="slug" 
                                    placeholder="exemplo: github" 
-                                   class="input input-bordered input-sm sm:input-md w-full" 
+                                   class="input input-bordered w-full" 
                                    required />
+                            <label class="label">
+                                <span class="label-text-alt">Identificador único para o redirect</span>
+                            </label>
                         </div>
                         
-                        <div class="form-control w-full">
-                            <label class="label py-1">
-                                <span class="label-text text-sm">URL Original</span>
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-medium">URL Original</span>
                             </label>
                             <input type="url" 
                                    name="url" 
                                    placeholder="https://exemplo.com/pagina-longa" 
-                                   class="input input-bordered input-sm sm:input-md w-full" 
+                                   class="input input-bordered w-full" 
                                    required />
+                            <label class="label">
+                                <span class="label-text-alt">URL completa para redirecionamento</span>
+                            </label>
                         </div>
-                        
-                        <div>
-                            <button type="submit" class="btn btn-primary sm:btn-md w-full ">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                                </svg>
-                                Criar Redirect
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            
-            <!-- URL List with HTMX -->
-            <div class="card bg-base-100 shadow-xl border border-base-300">
-                <div class="card-body p-4 sm:p-6">
-                    <h2 class="card-title mb-4 text-primary text-base sm:text-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                        Lista de URLs
-                    </h2>
-                    
-                    <div th:if="${#lists.isEmpty(urls)}" class="text-center py-8 sm:py-12 text-base-content/50">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 sm:h-16 sm:w-16 mx-auto mb-4 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                        </svg>
-                        <p class="text-base sm:text-lg">Nenhuma URL cadastrada ainda</p>
-                        <p class="text-xs sm:text-sm">Crie seu primeiro redirect acima</p>
                     </div>
                     
-                    <!-- Mobile View: Cards -->
-                    <div th:if="${!#lists.isEmpty(urls)}" class="block sm:hidden space-y-3">
-                        <div th:each="url : ${urls}" class="card bg-base-200 shadow-sm">
-                            <div class="card-body p-3">
-                                <!-- Slug e Status -->
-                                <div class="flex items-center justify-between mb-2">
+                    <div class="flex justify-end">
+                        <button type="submit" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                            </svg>
+                            Criar Redirect
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Filters Card -->
+        <div class="card bg-base-100 shadow-xl mb-6 border border-base-300">
+            <div class="card-body">
+                <h2 class="card-title text-primary mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                    </svg>
+                    Filtros de Pesquisa
+                </h2>
+                
+                <form method="get" action="/urls" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-medium">Buscar</span>
+                            </label>
+                            <input type="text" 
+                                   name="filter" 
+                                   th:value="${filter}"
+                                   placeholder="Slug ou URL" 
+                                   class="input input-bordered w-full" />
+                        </div>
+                        
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-medium">Status</span>
+                            </label>
+                            <select name="isEnabled" class="select select-bordered w-full">
+                                <option value="" th:selected="${isEnabled == null}">Todos</option>
+                                <option value="true" th:selected="${isEnabled != null && isEnabled}">Ativo</option>
+                                <option value="false" th:selected="${isEnabled != null && !isEnabled}">Inativo</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-medium">Criado após</span>
+                            </label>
+                            <input type="datetime-local" 
+                                   name="createdAfter" 
+                                   th:value="${createdAfter != null ? #temporals.format(createdAfter, 'yyyy-MM-dd''T''HH:mm') : ''}"
+                                   class="input input-bordered w-full" />
+                        </div>
+                        
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-medium">Criado antes</span>
+                            </label>
+                            <input type="datetime-local" 
+                                   name="createdBefore" 
+                                   th:value="${createdBefore != null ? #temporals.format(createdBefore, 'yyyy-MM-dd''T''HH:mm') : ''}"
+                                   class="input input-bordered w-full" />
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-2 justify-end">
+                        <a href="/urls" class="btn btn-ghost">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            Limpar
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                            Filtrar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- URLs Table Card -->
+        <div class="card bg-base-100 shadow-xl border border-base-300">
+            <div class="card-body">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="card-title text-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        Suas URLs
+                    </h2>
+                    <span class="badge badge-primary badge-lg" th:text="${urls.totalElements + ' URLs'}">0 URLs</span>
+                </div>
+                
+                <div class="overflow-x-auto" style="max-height: 600px; min-height: 400px; overflow-y: auto;">
+                    <table class="table table-zebra w-full">
+                        <thead>
+                            <tr>
+                                <th>Slug</th>
+                                <th>URL Original</th>
+                                <th>Status</th>
+                                <th>Criado em</th>
+                                <th class="text-center">Ações</th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                            <tr th:each="url : ${urls.content}">
+                                <td>
                                     <div class="flex items-center gap-2">
-                                        <kbd class="kbd kbd-sm text-xs" th:text="${url.slug}">slug</kbd>
+                                        <kbd class="kbd kbd-sm font-mono" th:text="${url.slug}">slug</kbd>
                                         <button onclick="copyToClipboard(this)" 
                                                 th:data-url="|http://localhost:8080/redirect/${url.slug}|"
-                                                class="btn btn-ghost btn-xs btn-square">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                class="btn btn-ghost btn-xs btn-circle"
+                                                title="Copiar link">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                                             </svg>
                                         </button>
                                     </div>
-                                    <span th:if="${url.isEnabled}" class="badge badge-success badge-xs">Ativo</span>
-                                    <span th:if="${!url.isEnabled}" class="badge badge-error badge-xs">Inativo</span>
-                                </div>
+                                </td>
                                 
-                                <!-- URL -->
-                                <a th:href="${url.url}" 
-                                   target="_blank" 
-                                   class="link link-primary text-xs break-all line-clamp-2"
-                                   th:text="${url.url}">
-                                </a>
+                                <td>
+                                    <a th:href="${url.url}" 
+                                       target="_blank" 
+                                       class="link link-primary text-sm break-all max-w-md inline-block"
+                                       th:text="${url.url}">
+                                    </a>
+                                </td>
                                 
-                                <!-- Ações -->
-                                <div class="card-actions justify-end mt-2 pt-2 border-t border-base-300">
-                                    <button th:attr="hx-post=@{/urls/{id}/toggle(id=${url.id})}"
-                                            hx-target="body"
-                                            hx-swap="innerHTML"
-                                            type="button"
-                                            class="btn btn-xs btn-outline"
-                                            th:classappend="${url.isEnabled} ? 'btn-warning' : 'btn-success'">
-                                        <span th:text="${url.isEnabled} ? 'Desativar' : 'Ativar'"></span>
-                                    </button>
-                                    
-                                    <button th:attr="hx-post=@{/urls/{id}/delete(id=${url.id})}"
-                                            hx-target="body"
-                                            hx-swap="innerHTML"
-                                            hx-confirm="Tem certeza que deseja deletar este redirect?"
-                                            type="button"
-                                            class="btn btn-xs btn-outline btn-error">
-                                        Deletar
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Desktop View: Table -->
-                    <div th:if="${!#lists.isEmpty(urls)}" class="hidden sm:block overflow-x-auto">
-                        <table class="table w-full">
-                            <thead>
-                                <tr>
-                                    <th class="w-auto">Slug</th>
-                                    <th class="hidden md:table-cell">URL Original</th>
-                                    <th class="w-24">Status</th>
-                                    <th class="w-auto text-center">Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr th:each="url : ${urls}">
-                                    <td>
-                                        <div class="flex items-center gap-2">
-                                            <kbd class="kbd kbd-sm" th:text="${url.slug}">slug</kbd>
-                                            <button onclick="copyToClipboard(this)" 
-                                                    th:data-url="|http://localhost:8080/redirect/${url.slug}|"
-                                                    class="btn btn-ghost btn-xs">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </td>
-                                    <td class="hidden md:table-cell">
-                                        <a th:href="${url.url}" 
-                                           target="_blank" 
-                                           class="link link-primary text-sm break-all max-w-md"
-                                           th:text="${url.url}">
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <span th:if="${url.isEnabled}" class="badge badge-success badge-sm">
-                                            Ativo
-                                        </span>
-                                        <span th:if="${!url.isEnabled}" class="badge badge-error badge-sm">
-                                            Inativo
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <div class="flex flex-wrap gap-2 justify-center items-center min-w-max">
-                                            <!-- Toggle Button with HTMX -->
-                                            <button th:attr="hx-post=@{/urls/{id}/toggle(id=${url.id})}"
-                                                    hx-target="body"
-                                                    hx-swap="innerHTML"
-                                                    type="button"
-                                                    class="btn btn-sm btn-outline flex-nowrap whitespace-nowrap"
-                                                    th:classappend="${url.isEnabled} ? 'btn-warning' : 'btn-success'">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-                                                </svg>
-                                                <span th:text="${url.isEnabled} ? 'Desativar' : 'Ativar'"></span>
-                                            </button>
-                                            
-                                            <!-- Delete Button with HTMX -->
-                                            <button th:attr="hx-post=@{/urls/{id}/delete(id=${url.id})}"
-                                                    hx-target="body"
-                                                    hx-swap="innerHTML"
-                                                    hx-confirm="Tem certeza que deseja deletar este redirect?"
-                                                    type="button"
-                                                    class="btn btn-sm btn-outline btn-error flex-nowrap whitespace-nowrap">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                </svg>
-                                                <span>Deletar</span>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                <td>
+                                    <span th:if="${url.isEnabled}" class="badge badge-success gap-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        Ativo
+                                    </span>
+                                    <span th:unless="${url.isEnabled}" class="badge badge-error gap-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                        Inativo
+                                    </span>
+                                </td>
+                                
+                                <td>
+                                    <span class="text-sm" th:text="${#temporals.format(url.createdAt, 'dd/MM/yyyy HH:mm')}">01/01/2024 10:00</span>
+                                </td>
+                                
+                                <td class="text-center">
+                                    <div class="dropdown dropdown-end">
+                                        <label tabindex="0" class="btn btn-ghost btn-sm btn-circle">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                                            </svg>
+                                        </label>
+                                        <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow-lg bg-base-100 rounded-box w-52 border border-base-300">
+                                            <li>
+                                                <a th:data-url-id="${url.id}"
+                                                   th:data-slug="${url.slug}"
+                                                   th:data-url="${url.url}"
+                                                   th:data-enabled="${url.isEnabled}"
+                                                   onclick="openEditModal(this.dataset.urlId, this.dataset.slug, this.dataset.url, this.dataset.enabled)"
+                                                   class="cursor-pointer">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                    </svg>
+                                                    Editar
+                                                </a>
+                                            </li>
+                                            <li th:if="${url.isEnabled}">
+                                                <a th:data-url-id="${url.id}"
+                                                   th:data-slug="${url.slug}"
+                                                   onclick="openToggleModal(this.dataset.urlId, this.dataset.slug, false)"
+                                                   class="cursor-pointer">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 715.636 5.636m12.728 12.728L5.636 5.636" />
+                                                    </svg>
+                                                    Desativar
+                                                </a>
+                                            </li>
+                                            <li th:unless="${url.isEnabled}">
+                                                <a th:data-url-id="${url.id}"
+                                                   th:data-slug="${url.slug}"
+                                                   onclick="openToggleModal(this.dataset.urlId, this.dataset.slug, true)"
+                                                   class="cursor-pointer">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg>
+                                                    Ativar
+                                                </a>
+                                            </li>
+                                            <div class="divider my-1"></div>
+                                            <li>
+                                                <a th:data-url-id="${url.id}"
+                                                   th:data-slug="${url.slug}"
+                                                   onclick="openDeleteModal(this.dataset.urlId, this.dataset.slug)"
+                                                   class="text-error cursor-pointer">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                    </svg>
+                                                    Deletar
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div th:if="${urls.content.isEmpty()}" class="alert alert-info mt-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span>Nenhuma URL encontrada com os filtros aplicados.</span>
+                </div>
+                
+                <!-- Paginação -->
+                <div th:if="${urls.totalPages > 1}" class="flex justify-center mt-6">
+                    <div class="join">
+                        <a th:href="@{/urls(page=0, size=${urls.size}, filter=${filter}, isEnabled=${isEnabled}, createdAfter=${createdAfter}, createdBefore=${createdBefore})}" 
+                           th:classappend="${urls.first} ? 'btn-disabled' : ''"
+                           class="join-item btn btn-sm">«</a>
+                        
+                        <a th:href="@{/urls(page=${urls.number - 1}, size=${urls.size}, filter=${filter}, isEnabled=${isEnabled}, createdAfter=${createdAfter}, createdBefore=${createdBefore})}" 
+                           th:classappend="${urls.first} ? 'btn-disabled' : ''"
+                           class="join-item btn btn-sm">‹</a>
+                        
+                        <button class="join-item btn btn-sm btn-active" th:text="'Página ' + ${urls.number + 1} + ' de ' + ${urls.totalPages}">Página 1 de 5</button>
+                        
+                        <a th:href="@{/urls(page=${urls.number + 1}, size=${urls.size}, filter=${filter}, isEnabled=${isEnabled}, createdAfter=${createdAfter}, createdBefore=${createdBefore})}" 
+                           th:classappend="${urls.last} ? 'btn-disabled' : ''" 
+                           class="join-item btn btn-sm">›</a>
+                        
+                        <a th:href="@{/urls(page=${urls.totalPages - 1}, size=${urls.size}, filter=${filter}, isEnabled=${isEnabled}, createdAfter=${createdAfter}, createdBefore=${createdBefore})}" 
+                           th:classappend="${urls.last} ? 'btn-disabled' : ''"
+                           class="join-item btn btn-sm">»</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Modal: Editar URL -->
+    <dialog id="edit-modal" class="modal">
+        <div class="modal-box">
+            <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            </form>
+            <h3 class="font-bold text-lg mb-4 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+                Editar URL
+            </h3>
+            
+            <form id="edit-form" method="post" class="space-y-4">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text font-medium">Slug</span>
+                    </label>
+                    <input type="text" id="edit-slug" name="slug" required class="input input-bordered w-full" />
+                </div>
+                
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text font-medium">URL Original</span>
+                    </label>
+                    <input type="url" id="edit-url" name="url" required class="input input-bordered w-full" />
+                </div>
+                
+                <div class="form-control">
+                    <label class="label cursor-pointer">
+                        <span class="label-text font-medium">Status</span>
+                        <input type="checkbox" id="edit-enabled" name="isEnabled" class="toggle toggle-primary" />
+                    </label>
+                </div>
+                
+                <div class="modal-action">
+                    <button type="submit" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        Salvar
+                    </button>
+                    <button type="button" onclick="document.getElementById('edit-modal').close()" class="btn btn-ghost">Cancelar</button>
+                </div>
+            </form>
+        </div>
+        <form method="dialog" class="modal-backdrop">
+            <button>close</button>
+        </form>
+    </dialog>
+
+    <!-- Modal: Ativar/Desativar -->
+    <dialog id="toggle-modal" class="modal">
+        <div class="modal-box">
+            <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            </form>
+            <h3 class="font-bold text-lg mb-4" id="toggle-title">Confirmar Ação</h3>
+            <p class="py-4" id="toggle-message">Mensagem</p>
+            
+            <form id="toggle-form" method="post" class="modal-action">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <button type="submit" class="btn btn-primary">Confirmar</button>
+                <button type="button" onclick="document.getElementById('toggle-modal').close()" class="btn btn-ghost">Cancelar</button>
+            </form>
+        </div>
+        <form method="dialog" class="modal-backdrop">
+            <button>close</button>
+        </form>
+    </dialog>
+
+    <!-- Modal: Deletar -->
+    <dialog id="delete-modal" class="modal">
+        <div class="modal-box">
+            <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            </form>
+            <h3 class="font-bold text-lg mb-4 flex items-center gap-2 text-error">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                Confirmar Exclusão
+            </h3>
+            <p class="py-4">
+                Tem certeza que deseja deletar o redirect <span id="delete-slug-display" class="font-bold text-error"></span>?
+                <br><span class="text-sm text-base-content/70">Esta ação não pode ser desfeita.</span>
+            </p>
+            
+            <form id="delete-form" method="post" class="modal-action">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <button type="submit" class="btn btn-error">Deletar</button>
+                <button type="button" onclick="document.getElementById('delete-modal').close()" class="btn btn-ghost">Cancelar</button>
+            </form>
+        </div>
+        <form method="dialog" class="modal-backdrop">
+            <button>close</button>
+        </form>
+    </dialog>
+
     <script>
-        // Função para copiar URL
         function copyToClipboard(button) {
-            const url = button.getAttribute('data-url');
+            const url = button.dataset.url;
             navigator.clipboard.writeText(url).then(() => {
-                // Toast notification
-                const toast = document.createElement('div');
-                toast.className = 'toast toast-top toast-end';
-                toast.innerHTML = `
-                    <div class="alert alert-success">
-                        <span>Link copiado!</span>
-                    </div>
-                `;
-                document.body.appendChild(toast);
-                setTimeout(() => toast.remove(), 2000);
+                const originalHTML = button.innerHTML;
+                button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>';
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                }, 2000);
             });
         }
 
-        // Scroll para o topo após atualização
-        document.body.addEventListener('htmx:afterSwap', function(event) {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
+        function openEditModal(urlId, slug, url, enabled) {
+            document.getElementById('edit-form').action = `/urls/${urlId}/edit`;
+            document.getElementById('edit-slug').value = slug;
+            document.getElementById('edit-url').value = url;
+            document.getElementById('edit-enabled').checked = enabled === 'true';
+            document.getElementById('edit-modal').showModal();
+        }
+
+        function openToggleModal(urlId, slug, activate) {
+            document.getElementById('toggle-form').action = `/urls/${urlId}/toggle`;
+            document.getElementById('toggle-title').textContent = activate ? 'Ativar URL' : 'Desativar URL';
+            document.getElementById('toggle-message').textContent = 
+                `Tem certeza que deseja ${activate ? 'ativar' : 'desativar'} o redirect "${slug}"?`;
+            document.getElementById('toggle-modal').showModal();
+        }
+
+        function openDeleteModal(urlId, slug) {
+            document.getElementById('delete-form').action = `/urls/${urlId}/delete`;
+            document.getElementById('delete-slug-display').textContent = slug;
+            document.getElementById('delete-modal').showModal();
+        }
     </script>
 </body>
 </html>

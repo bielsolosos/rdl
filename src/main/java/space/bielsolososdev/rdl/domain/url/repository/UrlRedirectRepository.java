@@ -3,12 +3,13 @@ package space.bielsolososdev.rdl.domain.url.repository;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import space.bielsolososdev.rdl.domain.url.model.UrlRedirect;
 
-public interface UrlRedirectRepository extends JpaRepository<UrlRedirect, Long> {
+public interface UrlRedirectRepository extends JpaRepository<UrlRedirect, Long>, JpaSpecificationExecutor<UrlRedirect> {
 
-      /**
+    /**
      * Busca uma URL pelo slug que esteja habilitada
      */
     Optional<UrlRedirect> findBySlugAndIsEnabledTrue(String slug);
